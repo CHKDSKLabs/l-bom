@@ -19,31 +19,31 @@ pip install -e .
 Show the installed version:
 
 ```bash
-llm-sbom version
+L-BOM version
 ```
 
 Scan a single model file and emit JSON:
 
 ```bash
-llm-sbom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf
+L-BOM scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf
 ```
 
 Scan a single model file and emit SPDX tag-value:
 
 ```bash
-llm-sbom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format spdx
+L-BOM scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format spdx
 ```
 
 Scan a directory recursively and render a Rich table:
 
 ```bash
-llm-sbom scan .\models --format table
+L-BOM scan .\models --format table
 ```
 
 Skip SHA256 hashing for very large files and write the result to disk:
 
 ```bash
-llm-sbom scan .\models --no-hash --output .\model-sbom.json
+L-BOM scan .\models --no-hash --output .\model-sbom.json
 ```
 
 ## Sample JSON output
@@ -52,7 +52,7 @@ llm-sbom scan .\models --no-hash --output .\model-sbom.json
 {
   "sbom_version": "1.0",
   "generated_at": "2026-03-24T14:08:22.118000+00:00",
-  "tool_name": "llm-sbom",
+  "tool_name": "L-BOM",
   "tool_version": "0.1.0",
   "model_path": "C:\\models\\Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "model_filename": "Llama-3.1-8B-Instruct-Q4_K_M.gguf",

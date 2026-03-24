@@ -1,4 +1,4 @@
-"""Command-line interface for llm-sbom."""
+"""Command-line interface for L-BOM."""
 
 from __future__ import annotations
 
@@ -139,7 +139,7 @@ def build_sbom_document(model_path: Path, compute_hash: bool) -> SBOMDocument:
     return SBOMDocument(
         sbom_version="1.0",
         generated_at=datetime.now(timezone.utc).isoformat(),
-        tool_name="llm-sbom",
+        tool_name="l-bom",
         tool_version=__version__,
         model_path=str(absolute_path),
         model_filename=absolute_path.name,
