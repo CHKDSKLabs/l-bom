@@ -1,3 +1,14 @@
+---
+title: L Bom
+emoji: 📚
+colorFrom: pink
+colorTo: red
+sdk: static
+pinned: false
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+
 # L-BOM 💘
 
 `L-BOM` is a small Python CLI that inspects local LLM model artifacts such as `.gguf` and `.safetensors` files and emits a lightweight Software Bill of Materials (SBOM) with file identity, format details, model metadata, and parsing warnings.
