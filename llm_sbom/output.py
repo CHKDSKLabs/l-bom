@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Sequence
 from urllib.parse import quote
@@ -31,9 +32,9 @@ def render_json(documents: Sequence[SBOMDocument]) -> str:
 
     payload: Any
     if len(documents) == 1:
-        payload = documents[0].to_dict()
+        payload = asdict(documents[0])
     else:
-        payload = [document.to_dict() for document in documents]
+        payload = [asdict(document) for document in documents]
     return json.dumps(payload, indent=2, ensure_ascii=False)
 
 
@@ -54,7 +55,7 @@ def render_table(documents: Sequence[SBOMDocument], color: bool = True) -> str:
         table = Table(title=title, header_style="bold cyan")
         table.add_column("Field", style="bold")
         table.add_column("Value")
-        for field_name, value in document.to_dict().items():
+        for field_name, value in asdict(document).items():
             if value is None:
                 continue
             table.add_row(field_name, _format_table_value(value))

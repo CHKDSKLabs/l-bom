@@ -7,7 +7,7 @@ import os
 import struct
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict, cast
 
 import click
 
@@ -20,6 +20,28 @@ from .schema import SBOMDocument
 
 HASH_CHUNK_SIZE = 8 * 1024 * 1024
 MODEL_SUFFIXES = {".gguf", ".safetensors"}
+
+
+class ParsedModelData(TypedDict):
+    architecture: str | None
+    parameter_count: int | None
+    quantization: str | None
+    dtype: str | None
+    context_length: int | None
+    vocab_size: int | None
+    training_framework: str | None
+    metadata: dict[str, Any]
+    warnings: list[str]
+
+
+class SidecarModelData(TypedDict):
+    architecture: str | None
+    dtype: str | None
+    license: str | None
+    base_model: str | None
+    training_framework: str | None
+    metadata: dict[str, Any]
+    warnings: list[str]
 
 
 @click.group(help="Generate a Software Bill of Materials for local LLM model files.")
@@ -100,37 +122,19 @@ def build_sbom_document(model_path: Path, compute_hash: bool) -> SBOMDocument:
         warnings.append("SHA256 computation skipped by request.")
 
     format_name = detect_model_format(absolute_path, warnings)
-    parsed = {
-        "architecture": None,
-        "parameter_count": None,
-        "quantization": None,
-        "dtype": None,
-        "context_length": None,
-        "vocab_size": None,
-        "training_framework": None,
-        "metadata": {},
-        "warnings": [],
-    }
-    sidecar = {
-        "architecture": None,
-        "dtype": None,
-        "license": None,
-        "base_model": None,
-        "training_framework": None,
-        "metadata": {},
-        "warnings": [],
-    }
+    parsed: ParsedModelData = _empty_parsed_result()
+    sidecar: SidecarModelData = _empty_sidecar_result()
 
     if format_name == "gguf":
-        parsed = parse_gguf(absolute_path)
-        sidecar = parse_sidecar_configs(absolute_path)
+        parsed = cast(ParsedModelData, parse_gguf(absolute_path))
+        sidecar = cast(SidecarModelData, parse_sidecar_configs(absolute_path))
     elif format_name == "safetensors":
-        parsed = parse_safetensors(absolute_path)
-        sidecar = parse_sidecar_configs(absolute_path)
+        parsed = cast(ParsedModelData, parse_safetensors(absolute_path))
+        sidecar = cast(SidecarModelData, parse_sidecar_configs(absolute_path))
 
-    warnings.extend(parsed.get("warnings", []))
-    warnings.extend(sidecar.get("warnings", []))
-    metadata = merge_metadata(parsed.get("metadata", {}), sidecar.get("metadata", {}))
+    warnings.extend(parsed["warnings"])
+    warnings.extend(sidecar["warnings"])
+    metadata = merge_metadata(parsed["metadata"], sidecar["metadata"])
 
     return SBOMDocument(
         sbom_version="1.0",
@@ -142,18 +146,46 @@ def build_sbom_document(model_path: Path, compute_hash: bool) -> SBOMDocument:
         file_size_bytes=file_size,
         sha256=sha256,
         format=format_name,
-        architecture=parsed.get("architecture") or sidecar.get("architecture"),
-        parameter_count=parsed.get("parameter_count"),
-        quantization=parsed.get("quantization"),
-        dtype=parsed.get("dtype") or sidecar.get("dtype"),
-        context_length=parsed.get("context_length"),
-        vocab_size=parsed.get("vocab_size"),
-        license=sidecar.get("license"),
-        base_model=sidecar.get("base_model"),
-        training_framework=sidecar.get("training_framework") or parsed.get("training_framework"),
+        architecture=parsed["architecture"] or sidecar["architecture"],
+        parameter_count=parsed["parameter_count"],
+        quantization=parsed["quantization"],
+        dtype=parsed["dtype"] or sidecar["dtype"],
+        context_length=parsed["context_length"],
+        vocab_size=parsed["vocab_size"],
+        license=sidecar["license"],
+        base_model=sidecar["base_model"],
+        training_framework=sidecar["training_framework"] or parsed["training_framework"],
         metadata=metadata,
         warnings=_deduplicate_strings(warnings),
     )
+
+
+def _empty_parsed_result() -> ParsedModelData:
+
+    return {
+        "architecture": None,
+        "parameter_count": None,
+        "quantization": None,
+        "dtype": None,
+        "context_length": None,
+        "vocab_size": None,
+        "training_framework": None,
+        "metadata": {},
+        "warnings": [],
+    }
+
+
+def _empty_sidecar_result() -> SidecarModelData:
+
+    return {
+        "architecture": None,
+        "dtype": None,
+        "license": None,
+        "base_model": None,
+        "training_framework": None,
+        "metadata": {},
+        "warnings": [],
+    }
 
 
 def detect_model_format(model_path: Path, warnings: list[str]) -> str:
