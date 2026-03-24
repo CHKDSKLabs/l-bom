@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 try:
-    from dataclasses_json import dataclass_json
+    from dataclasses_json import dataclass_json as _dataclass_json
 except ImportError:
     def _fallback_dataclass_json(cls: type[Any]) -> type[Any]:
 
@@ -23,9 +23,9 @@ except ImportError:
         setattr(cls, "to_json", to_json)
         return cls
 
-    def dataclass_json(cls: type[Any]) -> type[Any]:
-
-        return _fallback_dataclass_json(cls)
+    dataclass_json: Callable[[type[Any]], type[Any]] = _fallback_dataclass_json
+else:
+    dataclass_json = _dataclass_json
 
 
 @dataclass_json
