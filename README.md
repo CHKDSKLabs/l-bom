@@ -19,31 +19,31 @@ pip install -e .
 Show the installed version:
 
 ```bash
-L-BOM version
+l-bom version
 ```
 
 Scan a single model file and emit JSON:
 
 ```bash
-L-BOM scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf
+l-bom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf
 ```
 
 Scan a single model file and emit SPDX tag-value:
 
 ```bash
-L-BOM scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format spdx
+l-bom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format spdx
 ```
 
 Scan a directory recursively and render a Rich table:
 
 ```bash
-L-BOM scan .\models --format table
+l-bom scan .\models --format table
 ```
 
 Skip SHA256 hashing for very large files and write the result to disk:
 
 ```bash
-L-BOM scan .\models --no-hash --output .\model-sbom.json
+l-bom scan .\models --no-hash --output .\model-sbom.json
 ```
 
 ## Sample JSON output
