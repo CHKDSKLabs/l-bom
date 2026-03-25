@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Git
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -18,5 +20,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git remote add hf https://user:${HF_TOKEN}@huggingface.co/spaces/CHK-DSK-Labs/l-bom || git remote set-url hf https://user:${HF_TOKEN}@huggingface.co/spaces/CHK-DSK-Labs/l-bom
-          git push hf main --force
+          git remote add hf https://user:${HF_TOKEN}@huggingface.co/spaces/CHKDSK-Labs/l-bom || git remote set-url hf https://user:${HF_TOKEN}@huggingface.co/spaces/CHKDSK-Labs/l-bom
+          git push --force hf HEAD:main
