@@ -3,17 +3,16 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<title>My static Space</title>
+		<title>L-BOM: Lightweight Model SBOM</title>
 		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
 		<div class="card">
-			<h1>Welcome to your static Space!</h1>
-			<p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
-			<p>
-				Also don't forget to check the
-				<a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
-			</p>
+			<h1>L-BOM</h1>
+			<p>L-BOM is a small Python CLI for inspecting local LLM model artifacts and generating a lightweight software bill of materials.</p>
+			<p>It works with files such as <code>.gguf</code> and <code>.safetensors</code> and reports file identity, format details, model metadata, and parsing warnings.</p>
+			<p>Install it locally with <code>pip install .</code>, then run <code>l-bom scan path\to\model.gguf</code> to generate output in JSON, SPDX, or table format.</p>
+			<p>Source, usage examples, and development details are available on <a href="https://github.com/CHKDSKLabs/l-bom" target="_blank" rel="noreferrer">GitHub</a>.</p>
 		</div>
 	</body>
 </html>

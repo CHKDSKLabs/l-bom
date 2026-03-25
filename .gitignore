@@ -1,1 +1,8 @@
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+build
+L_BOM.egg-info/
 __pycache__/
+.gitattributes
