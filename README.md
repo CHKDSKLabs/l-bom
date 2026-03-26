@@ -1,17 +1,17 @@
 ---
-title: L Bom
-emoji: 📚
+title: L Bom 
+emoji: 💘
 colorFrom: pink
 colorTo: red
 sdk: static
 pinned: true
 ---
 
-# L-BOM 💘
+## L-BOM 💘: Local LLM Software Bill of Materials
 
 `L-BOM` is a small Python CLI that inspects local LLM model artifacts such as `.gguf` and `.safetensors` files and emits a lightweight Software Bill of Materials (SBOM) with file identity, format details, model metadata, and parsing warnings.
 
-## Install
+### Install
 
 ```bash
 pip install .
@@ -23,7 +23,7 @@ For editable local development:
 pip install -e .
 ```
 
-## Usage
+### Usage
 
 Show the installed version:
 
@@ -49,13 +49,25 @@ Scan a directory recursively and render a Rich table:
 l-bom scan .\models --format table
 ```
 
+Export a single model scan as Hugging Face-ready `README.md` content:
+
+```bash
+l-bom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format hf-readme --hf-sdk static --hf-app-file index.html
+```
+
+Override the inferred title and short description for the README front matter:
+
+```bash
+l-bom scan .\models\Llama-3.1-8B-Instruct-Q4_K_M.gguf --format hf-readme --hf-title "Llama 3.1 Demo" --hf-short-description "Quantized GGUF artifact for a local demo space"
+```
+
 Skip SHA256 hashing for very large files and write the result to disk:
 
 ```bash
 l-bom scan .\models --no-hash --output .\model-sbom.json
 ```
 
-## Sample JSON output
+### Sample JSON output
 
 ```json
 {
@@ -101,6 +113,6 @@ l-bom scan .\models --no-hash --output .\model-sbom.json
 }
 ```
 
-## License
+### License
 
 This project is licensed under the MIT License. See `LICENSE` for the full text.
