@@ -9,7 +9,7 @@ pinned: true
 
 ## L-BOM - Local LLM Software Bill of Materials CLI
 
-`L-BOM` is a small Python CLI that inspects local LLM model artifacts such as `.gguf` and `.safetensors` files and emits a lightweight Software Bill of Materials (SBOM) with file identity, format details, model metadata, and parsing warnings.
+`L-BOM` is a small Python CLI that inspects local LLM model artifacts such as `.gguf` and `.safetensors` files and emits a lightweight Software Bill of Materials (SBOM) with file identity, format details, model metadata, and parsing warnings. `L-BOM` has a sister program, [`GUI-BOM`](https://github.com/CHKDSKLabs/gui-bom) that wraps it in a friendly GUI and makes it easy to deploy.
 
 ### Install
 
